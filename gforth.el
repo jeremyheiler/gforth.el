@@ -54,7 +54,7 @@
 
 ;(setq debug-on-error t)
 
-;; Code ripped from `version.el' for compatability with Emacs versions
+;; Code ripped from 'version.el' for compatability with Emacs versions
 ;; prior to 19.23.
 (if (not (boundp 'emacs-major-version))
     (defconst emacs-major-version
@@ -65,7 +65,7 @@
   (or (< emacs-major-version major)
       (and (= emacs-major-version major) (< emacs-minor-version minor))))
 
-;; Code ripped from `subr.el' for compatability with Emacs versions
+;; Code ripped from 'subr.el' for compatability with Emacs versions
 ;; prior to 20.1
 (eval-when-compile
   (if (forth-emacs-older 20 1)
@@ -77,15 +77,15 @@
 	  "If COND yields nil, do BODY, else return nil."
 	  (cons 'if (cons cond (cons nil body)))))))
 
-;; `no-error' argument of require not supported in Emacs versions
+;; 'no-error' argument of require not supported in Emacs versions
 ;; prior to 20.4 :-(
 (defun forth-require (feature)
   (condition-case err (require feature) (error nil)))
 
 (require 'font-lock)
 
-;; define `font-lock-warning-face' in emacs-versions prior to 20.1
-;; (ripped from `font-lock.el')
+;; define 'font-lock-warning-face' in emacs-versions prior to 20.1
+;; (ripped from 'font-lock.el')
 (unless (boundp 'font-lock-warning-face)
   (message "defining font-lock-warning-face")
   (make-face 'font-lock-warning-face)
@@ -93,18 +93,18 @@
   (set-face-foreground font-lock-warning-face "red")
   (make-face-bold font-lock-warning-face))
 
-;; define `font-lock-constant-face' in XEmacs (just copy
-;; `font-lock-preprocessor-face')
+;; define 'font-lock-constant-face' in XEmacs (just copy
+;; 'font-lock-preprocessor-face')
 (unless (boundp 'font-lock-constant-face)
   (copy-face font-lock-preprocessor-face 'font-lock-constant-face))
 
 
-;; define `regexp-opt' in emacs versions prior to 20.1
+;; define 'regexp-opt' in emacs versions prior to 20.1
 ;; (this implementation is extremely inefficient, though)
 (eval-and-compile (forth-require 'regexp-opt))
 (unless (memq 'regexp-opt features)
   (message (concat
-	    "Warning: your Emacs version doesn't support `regexp-opt'. "
+	    "Warning: your Emacs version doesn't support 'regexp-opt'. "
             "Hilighting will be slow."))
   (defun regexp-opt (STRINGS &optional PAREN)
     (let ((open (if PAREN "\\(" "")) (close (if PAREN "\\)" "")))
@@ -149,7 +149,7 @@ in the future."
       (forth-check-motion)))
 
 (defvar forth-idle-function-timer nil
-  "Timer that runs `forth-idle-function' or nil if no timer installed.")
+  "Timer that runs 'forth-idle-function' or nil if no timer installed.")
 
 (defun forth-install-motion-hook ()
   "Install the motion-hooking mechanism.  Currently uses idle timers
@@ -162,8 +162,8 @@ but might be transparently changed in the future."
 (defvar forth-was-point nil)
 
 (defun forth-check-motion ()
-  "Run `forth-motion-hooks', if `point' changed since last call.  This
-used to be called via `post-command-hook' but uses idle timers now as
+  "Run 'forth-motion-hooks', if 'point' changed since last call.  This
+used to be called via 'post-command-hook' but uses idle timers now as
 users complaint about lagging performance."
   (when (or (eq forth-was-point nil) (/= forth-was-point (point)))
     (setq forth-was-point (point))
@@ -178,7 +178,7 @@ users complaint about lagging performance."
 This will disable hilighting of forth-mode buffers and will decrease
 the smartness of the indentation engine. Only set it to non-nil, if
 your computer is very slow. To disable hilighting, set
-`forth-hilight-level' to zero.")
+'forth-hilight-level' to zero.")
 
 (defvar forth-jit-parser nil
   "*Non-nil means to parse Forth-code just-in-time.
@@ -191,12 +191,12 @@ in Emacs21 (and newer versions).")
   "List of words for hilighting and recognition of parsed text areas.
 
 Hilighting of object-oriented Forth code is achieved, by appending either
-`forth-objects-words' or `forth-oof-words' to the list, depending on the values of `forth-use-objects' or `forth-use-oof'.
+'forth-objects-words' or 'forth-oof-words' to the list, depending on the values of 'forth-use-objects' or 'forth-use-oof'.
 
-After `forth-words' changed, `forth-compile-words' must be called to
+After 'forth-words' changed, 'forth-compile-words' must be called to
 make the changes take effect.
 
-Each item of `forth-words' has the form
+Each item of 'forth-words' has the form
    (MATCHER TYPE HILIGHT . &optional PARSED-TEXT ...)
 
 MATCHER is either a list of strings to match, or a REGEXP.
@@ -209,7 +209,7 @@ TYPE should be one of 'definiton-starter', 'definition-ender', 'compile-only',
    hilighted).
 
 HILIGHT is a cons cell of the form (FACE . MINIMUM-LEVEL)
-   Where MINIMUM-LEVEL specifies the minimum value of `forth-hilight-level',
+   Where MINIMUM-LEVEL specifies the minimum value of 'forth-hilight-level',
    that's required for matching text to be hilighted.
 
 PARSED-TEXT specifies whether and how a word parses following text. You can
@@ -366,29 +366,29 @@ PARSED-TYPE specifies what kind of text is parsed. It should be on of 'name',
   "Hilighting description for words of the \"OOF\" package")
 
 (defvar forth-local-words nil
-  "List of Forth words to prepend to `forth-words'. Should be set by a
+  "List of Forth words to prepend to 'forth-words'. Should be set by a
  forth source, using a local variables list at the end of the file
  (\"Local Variables: ... forth-local-words: ... End:\" construct).")
 
 (defvar forth-custom-words nil
-  "List of Forth words to prepend to `forth-words'. Should be set in your
+  "List of Forth words to prepend to 'forth-words'. Should be set in your
  .emacs.")
 
 (defvar forth-hilight-level 3 "*Level of hilighting of Forth code.")
 
-(defvar forth-compiled-words nil "Compiled representation of `forth-words'.")
+(defvar forth-compiled-words nil "Compiled representation of 'forth-words'.")
 
 (defvar forth-indent-words nil
   "List of words that have indentation behaviour.
-Each element of `forth-indent-words' should have the form
+Each element of 'forth-indent-words' should have the form
    (MATCHER INDENT1 INDENT2 &optional TYPE)
 
 MATCHER is either a list of strings to match, or a REGEXP.
-   If it's a REGEXP, it should not be surrounded by `\\<` or `\\>`, since
+   If it's a REGEXP, it should not be surrounded by '\\<' or '\\>', since
    that'll be done automatically by the search routines.
 
 TYPE might be omitted. If it's specified, the only allowed value is
-   currently the symbol `non-immediate', meaning that the word will not
+   currently the symbol 'non-immediate', meaning that the word will not
    have any effect on indentation inside definitions. (:NONAME is a good
    example for this kind of word).
 
@@ -405,8 +405,8 @@ INDENT1 and INDENT2 are indentation specifications of the form
    following lines, relative to the matching line.
 
    Even values of SELF-INDENT and NEXT-INDENT correspond to multiples of
-   `forth-indent-level'. Odd values get an additional
-   `forth-minor-indent-level' added/substracted. Eg a value of -2 indents
+   'forth-indent-level'. Odd values get an additional
+   'forth-minor-indent-level' added/substracted. Eg a value of -2 indents
    1 * forth-indent-level  to the left, wheras 3 indents
    1 * forth-indent-level + forth-minor-indent-level  columns to the right.")
 
@@ -435,13 +435,13 @@ INDENT1 and INDENT2 are indentation specifications of the form
 	(("\\g") (-2 . 2) (0 . 0))))
 
 (defvar forth-local-indent-words nil
-  "List of Forth words to prepend to `forth-indent-words', when a forth-mode
+  "List of Forth words to prepend to 'forth-indent-words', when a forth-mode
 buffer is created. Should be set by a Forth source, using a local variables
 list at the end of the file (\"Local Variables: ... forth-local-words: ...
 End:\" construct).")
 
 (defvar forth-custom-indent-words nil
-  "List of Forth words to prepend to `forth-indent-words'. Should be set in
+  "List of Forth words to prepend to 'forth-indent-words'. Should be set in
  your .emacs.")
 
 (defvar forth-indent-level 4
@@ -465,7 +465,7 @@ End:\" construct).")
 	      nil) list)
     filtered))
 
-;; Helper function for `forth-compile-word': return whether word has to be
+;; Helper function for 'forth-compile-word': return whether word has to be
 ;; added to the compiled word list, for syntactic parsing and hilighting.
 (defun forth-words-filter (word)
   (let* ((hilight (nth 2 word))
@@ -474,8 +474,8 @@ End:\" construct).")
     (or parsing-flag
 	(<= level forth-hilight-level))))
 
-;; Helper function for `forth-compile-word': translate one entry from
-;; `forth-words' into the form  (regexp regexp-depth word-description)
+;; Helper function for 'forth-compile-word': translate one entry from
+;; 'forth-words' into the form  (regexp regexp-depth word-description)
 (defun forth-compile-words-mapper (word)
   ;; warning: we cannot rely on regexp-opt's PAREN argument, since
   ;; XEmacs will use shy parens by default :-(
@@ -483,13 +483,13 @@ End:\" construct).")
 	 (regexp
 	  (concat "\\(" (cond ((stringp matcher) matcher)
 			      ((listp matcher) (regexp-opt matcher))
-			      (t (error "Invalid matcher `%s'")))
+			      (t (error "Invalid matcher '%s'")))
 		  "\\)"))
 	 (depth (regexp-opt-depth regexp))
 	 (description (cdr word)))
     (list regexp depth description)))
 
-;; Read `words' and create a compiled representation suitable for efficient
+;; Read 'words' and create a compiled representation suitable for efficient
 ;; parsing of the form
 ;; (regexp (subexp-count word-description) (subexp-count2 word-description2)
 ;;  ...)
@@ -511,10 +511,10 @@ End:\" construct).")
       result)))
 
 (defun forth-compile-words ()
-  "Compile the the words from `forth-words' and `forth-indent-words' into
+  "Compile the the words from 'forth-words' and 'forth-indent-words' into
  the format that's later used for doing the actual hilighting/indentation.
- Store the resulting compiled wordlists in `forth-compiled-words' and
-`forth-compiled-indent-words', respective"
+ Store the resulting compiled wordlists in 'forth-compiled-words' and
+'forth-compiled-indent-words', respective"
   (setq forth-compiled-words
 	(forth-compile-wordlist
 	 (forth-filter 'forth-words-filter forth-words)))
@@ -523,18 +523,18 @@ End:\" construct).")
 
 (defun forth-hack-local-variables ()
   "Parse and bind local variables, set in the contents of the current
- forth-mode buffer. Prepend `forth-local-words' to `forth-words' and
- `forth-local-indent-words' to `forth-indent-words'."
+ forth-mode buffer. Prepend 'forth-local-words' to 'forth-words' and
+ 'forth-local-indent-words' to 'forth-indent-words'."
   (hack-local-variables)
   (setq forth-words (append forth-local-words forth-words))
   (setq forth-indent-words (append forth-local-indent-words
 				   forth-indent-words)))
 
 (defun forth-customize-words ()
-  "Add the words from `forth-custom-words' and `forth-custom-indent-words'
- to `forth-words' and `forth-indent-words', respective. Add
- `forth-objects-words' and/or `forth-oof-words' to `forth-words', if
- `forth-use-objects' and/or `forth-use-oof', respective is set."
+  "Add the words from 'forth-custom-words' and 'forth-custom-indent-words'
+ to 'forth-words' and 'forth-indent-words', respective. Add
+ 'forth-objects-words' and/or 'forth-oof-words' to 'forth-words', if
+ 'forth-use-objects' and/or 'forth-use-oof', respective is set."
   (setq forth-words (append forth-custom-words forth-words
 			    (if forth-use-oof forth-oof-words nil)
 			    (if forth-use-objects forth-objects-words nil)))
@@ -580,7 +580,7 @@ End:\" construct).")
     (re-search-backward "\\<" pos (point-min) 1)
     (point)))
 
-;; Delete all properties, used by Forth mode, from `from' to `to'.
+;; Delete all properties, used by Forth mode, from 'from' to 'to'.
 (defun forth-delete-properties (from to)
   (remove-text-properties
    from to '(face nil fontified nil
@@ -608,9 +608,9 @@ End:\" construct).")
 	    'nil)))
     nil))
 
-;; Set properties of forth word at `point', eventually parsing subsequent
+;; Set properties of forth word at 'point', eventually parsing subsequent
 ;; words, and parsing all whitespaces. Set point to delimiter after word.
-;; The word, including it's parsed text gets the `forth-word' property, whose
+;; The word, including it's parsed text gets the 'forth-word' property, whose
 ;; value is unique, and may be used for getting the word's start/end
 ;; positions.
 (defun forth-set-word-properties (state data)
@@ -650,16 +650,16 @@ End:\" construct).")
 	    (setq parse-data (nthcdr 4 parse-data))))))
     (put-text-property start end 'forth-word start)))
 
-;; Search for known Forth words in the range `from' to `to', using
-;; `forth-next-known-forth-word' and set their properties via
-;; `forth-set-word-properties'.
+;; Search for known Forth words in the range 'from' to 'to', using
+;; 'forth-next-known-forth-word' and set their properties via
+;; 'forth-set-word-properties'.
 (defun forth-update-properties (from to &optional loudly)
   (save-excursion
     (let ((msg-count 0) (state) (word-descr) (last-location))
       (goto-char (forth-previous-word (forth-previous-start
 				       (max (point-min) (1- from)))))
       (setq to (forth-next-end (min (point-max) (1+ to))))
-      ;; `to' must be on a space delimiter, if a parsing word was changed
+      ;; 'to' must be on a space delimiter, if a parsing word was changed
       (setq to (forth-next-whitespace to))
       (setq state (get-text-property (point) 'forth-state))
       (setq last-location (point))
@@ -678,7 +678,7 @@ End:\" construct).")
 	  (if (eq type 'definition-starter) (setq state t))
 	  (if (eq type 'definition-ender) (setq state nil))
 	  (setq last-location (point))))
-      ;; update state property up to `to'
+      ;; update state property up to 'to'
       (if (and state (< (point) to))
 	  (put-text-property last-location to 'forth-state t))
       ;; extend search if following state properties differ from current state
@@ -690,21 +690,21 @@ End:\" construct).")
 	    ))
       )))
 
-;; save-buffer-state borrowed from `font-lock.el'
+;; save-buffer-state borrowed from 'font-lock.el'
 (eval-when-compile
   (defmacro forth-save-buffer-state (varlist &rest body)
     "Bind variables according to VARLIST and eval BODY restoring buffer state."
-    (` (let* ((,@ (append varlist
-		   '((modified (buffer-modified-p)) (buffer-undo-list t)
-		     (inhibit-read-only t) (inhibit-point-motion-hooks t)
-		     before-change-functions after-change-functions
-		     deactivate-mark buffer-file-name buffer-file-truename))))
-	 (,@ body)
-	 (when (and (not modified) (buffer-modified-p))
-	   (set-buffer-modified-p nil))))))
+    `(let* (,@(append varlist
+                      '((modified (buffer-modified-p)) (buffer-undo-list t)
+                        (inhibit-read-only t) (inhibit-point-motion-hooks t)
+                        before-change-functions after-change-functions
+                        deactivate-mark buffer-file-name buffer-file-truename)))
+       ,@body
+       (when (and (not modified) (buffer-modified-p))
+         (set-buffer-modified-p nil)))))
 
-;; Function that is added to the `change-functions' hook. Calls
-;; `forth-update-properties' and keeps care of disabling undo information
+;; Function that is added to the 'change-functions' hook. Calls
+;; 'forth-update-properties' and keeps care of disabling undo information
 ;; and stuff like that.
 (defun forth-change-function (from to len &optional loudly)
   (save-match-data
@@ -714,7 +714,7 @@ End:\" construct).")
      (forth-update-warn-long-lines))))
 
 (defun forth-fontification-function (from)
-  "Function to be called from `fontification-functions' of Emacs 21."
+  "Function to be called from 'fontification-functions' of Emacs 21."
   (save-match-data
     (forth-save-buffer-state
      ((to (min (point-max) (+ from 100))))
@@ -739,7 +739,7 @@ End:\" construct).")
 Used for imenu index generation.")
 
 (defvar forth-defining-words-regexp nil
-  "Regexp that's generated for matching `forth-defining-words'")
+  "Regexp that's generated for matching 'forth-defining-words'")
 
 (defun forth-next-definition-starter ()
   (progn
@@ -777,7 +777,7 @@ Used for imenu index generation.")
 ;;; Indentation
 ;;;
 
-;; Return, whether `pos' is the first forth word on its line
+;; Return, whether 'pos' is the first forth word on its line
 (defun forth-first-word-on-line-p (pos)
   (save-excursion
     (beginning-of-line)
@@ -785,8 +785,8 @@ Used for imenu index generation.")
     (= pos (point))))
 
 ;; Return indentation data (SELF-INDENT . NEXT-INDENT) of next known
-;; indentation word, or nil if there is no word up to `to'.
-;; Position `point' at location just after found word, or at `to'. Parsed
+;; indentation word, or nil if there is no word up to 'to'.
+;; Position 'point' at location just after found word, or at 'to'. Parsed
 ;; ranges of text will not be taken into consideration!
 (defun forth-next-known-indent-word (to)
   (if (<= (point) to)
@@ -812,9 +812,9 @@ Used for imenu index generation.")
 	    nil)))
     nil))
 
-;; Translate indentation value `indent' to indentation column. Multiples of
-;; 2 correspond to multiples of `forth-indent-level'. Odd numbers get an
-;; additional `forth-minor-indent-level' added (or substracted).
+;; Translate indentation value 'indent' to indentation column. Multiples of
+;; 2 correspond to multiples of 'forth-indent-level'. Odd numbers get an
+;; additional 'forth-minor-indent-level' added (or substracted).
 (defun forth-convert-to-column (indent)
   (let* ((sign (if (< indent 0) -1 1))
 	 (value (abs indent))
@@ -823,10 +823,10 @@ Used for imenu index generation.")
     (* sign (+ major minor))))
 
 ;; Return the column increment, that the current line of forth code does to
-;; the current or following lines. `which' specifies which indentation values
+;; the current or following lines. 'which' specifies which indentation values
 ;; to use. 0 means the indentation of following lines relative to current
 ;; line, 1 means the indentation of the current line relative to the previous
-;; line. Return `nil', if there are no indentation words on the current line.
+;; line. Return 'nil', if there are no indentation words on the current line.
 (defun forth-get-column-incr (which)
   (save-excursion
     (let ((regexp (car forth-compiled-indent-words))
@@ -906,7 +906,7 @@ Used for imenu index generation.")
 ;	(progn (forward-line -1) (forth-remove-trailing))
 ;      (goto-char (was-point)))))
 
-;; workaround for bug in `reindent-then-newline-and-indent'
+;; workaround for bug in 'reindent-then-newline-and-indent'
 (defun forth-reindent-then-newline-and-indent ()
   (interactive "*")
   (indent-according-to-mode)
@@ -921,7 +921,7 @@ Used for imenu index generation.")
 (defconst forth-l/b 16 "Number of lines per block")
 
 ;; Check whether the unconverted block file line, point is in, does not
-;; contain `\n' and `\t' characters.
+;; contain '\n' and '\t' characters.
 (defun forth-check-block-line (line)
   (let ((end (save-excursion (beginning-of-line) (forward-char forth-c/l)
 			     (point))))
@@ -950,7 +950,7 @@ Used for imenu index generation.")
 	(forth-remove-trailing))
       (mark t))))
 
-;; Pad a line of a block file up to `forth-c/l' characters, positioning `point'
+;; Pad a line of a block file up to 'forth-c/l' characters, positioning 'point'
 ;; at the end of line.
 (defun forth-pad-block-line ()
   (save-excursion
@@ -973,25 +973,25 @@ Used for imenu index generation.")
       (insert-char ?\  (- tab-width (% (current-column) tab-width))))))
 
 ;; Delete newline at end of current line, concatenating it with the following
-;; line. Place `point' at end of newly formed line.
+;; line. Place 'point' at end of newly formed line.
 (defun forth-delete-newline ()
   (end-of-line)
   (delete-region (point) (progn (beginning-of-line 2) (point))))
 
 (defun forth-convert-to-block (from to &optional original-buffer)
   "Convert range of text to block file format in current buffer."
-  (let* ((lines 0)) ; I have to count lines myself, since `count-lines' has
+  (let* ((lines 0)) ; I have to count lines myself, since 'count-lines' has
 		    ; problems with trailing newlines...
     (save-excursion
       (goto-char from)
       (set-mark to)
-      ;; pad lines to full length (`forth-c/l' characters per line)
+      ;; pad lines to full length ('forth-c/l' characters per line)
       (while (< (save-excursion (end-of-line) (point)) (mark t))
 	(setq lines (1+ lines))
 	(forth-pad-block-line)
 	(forth-convert-tabs-in-line)
 	(forward-line))
-      ;; also make sure the last line is padded, if `to' is at its end
+      ;; also make sure the last line is padded, if 'to' is at its end
       (end-of-line)
       (when (= (point) (mark t))
 	(setq lines (1+ lines))
@@ -1020,7 +1020,7 @@ done by checking whether the first line has 1024 characters or more."
        (end-of-line)
        (>= (current-column) 1024))))
 
-;; add block file conversion routines to `format-alist'
+;; add block file conversion routines to 'format-alist'
 (defconst forth-block-format-description
   '(forth-blocks "Forth block source file" nil
 		 forth-convert-from-block forth-convert-to-block
@@ -1043,8 +1043,8 @@ done by checking whether the first line has 1024 characters or more."
 (defvar forth-screen-number-string nil)
 
 (defun forth-update-show-screen ()
-  "If `forth-show-screen' is non-nil, put overlay arrow to start of screen,
-`point' is in. If arrow now points to different screen than before, display
+  "If 'forth-show-screen' is non-nil, put overlay arrow to start of screen,
+'point' is in. If arrow now points to different screen than before, display
 screen number."
   (if (not forth-show-screen)
       (setq overlay-arrow-string nil)
@@ -1062,7 +1062,7 @@ screen number."
 (add-hook 'forth-motion-hooks 'forth-update-show-screen)
 
 (defun forth-update-warn-long-lines ()
-  "If `forth-warn-long-lines' is non-nil, display a warning whenever a line
+  "If 'forth-warn-long-lines' is non-nil, display a warning whenever a line
 exceeds 64 characters."
   (when forth-warn-long-lines
     (when (> (save-excursion (end-of-line) (current-column)) forth-c/l)
@@ -1113,7 +1113,7 @@ exceeds 64 characters."
 ;;    :regexp "[^
 ;; ]+"
 ;;    :ignore-case t
-;;    :doc-spec '(("(gforth)Name Index" nil "`" "'  "))))
+;;    :doc-spec '(("(gforth)Name Index" nil "'" "'  "))))
 
 (require 'etags)
 
@@ -1193,11 +1193,11 @@ exceeds 64 characters."
 Major mode for editing Forth code. Tab indents for Forth code. Comments
 are delimited with \\ and newline. Paragraphs are separated by blank lines
 only. Block files are autodetected, when read, and converted to normal
-stream source format. See also `forth-block-mode'.
+stream source format. See also 'forth-block-mode'.
 \\{forth-mode-map}
 
 Variables controlling syntax hilighting/recognition of parsed text:
- `forth-words'
+ 'forth-words'
     List of words that have a special parsing behaviour and/or should be
     hilighted. Add custom words by setting forth-custom-words in your
     .emacs, or by setting forth-local-words, in source-files' local
@@ -1209,10 +1209,10 @@ Variables controlling syntax hilighting/recognition of parsed text:
  forth-use-oof
     Same as above, just for the \"OOF\" package.
  forth-custom-words
-    List of custom Forth words to prepend to `forth-words'. Should be set
+    List of custom Forth words to prepend to 'forth-words'. Should be set
     in your .emacs.
  forth-local-words
-    List of words to prepend to `forth-words', whenever a forth-mode
+    List of words to prepend to 'forth-words', whenever a forth-mode
     buffer is created. That variable should be set by Forth sources, using
     a local variables list at the end of file, to get file-specific
     hilighting.
@@ -1226,14 +1226,14 @@ Variables controlling syntax hilighting/recognition of parsed text:
     0..3
 
 Variables controlling indentation style:
- `forth-indent-words'
+ 'forth-indent-words'
     List of words that influence indentation.
  forth-local-indent-words
-    List of words to prepend to `forth-indent-words', similar to
+    List of words to prepend to 'forth-indent-words', similar to
     forth-local-words. Should be used for specifying file-specific
     indentation, using a local variables list.
  forth-custom-indent-words
-    List of words to prepend to `forth-indent-words'. Should be set in your
+    List of words to prepend to 'forth-indent-words'. Should be set in your
     .emacs.
  forth-indent-level
     Indentation increment/decrement of Forth statements.
@@ -1244,10 +1244,10 @@ Variables controlling block-file editing:
  forth-show-screen
     Non-nil means, that the start of the current screen is marked by an
     overlay arrow, and screen numbers are displayed in the mode line.
-    This variable is by default nil for `forth-mode' and t for
-    `forth-block-mode'.
+    This variable is by default nil for 'forth-mode' and t for
+    'forth-block-mode'.
  forth-overlay-arrow-string
-    String to display as the overlay arrow, when `forth-show-screen' is t.
+    String to display as the overlay arrow, when 'forth-show-screen' is t.
     Setting this variable to nil disables the overlay arrow.
  forth-block-base
     Screen number of the first block in a block file. Defaults to 1.
@@ -1255,16 +1255,16 @@ Variables controlling block-file editing:
     Non-nil means that a warning message is displayed whenever you edit or
     move over a line that is longer than 64 characters (the maximum line
     length that can be stored into a block file). This variable defaults to
-    t for `forth-block-mode' and to nil for `forth-mode'.
+    t for 'forth-block-mode' and to nil for 'forth-mode'.
 
 Variables controlling interaction with the Forth-process (also see
-`run-forth'):
+'run-forth'):
   forth-program-name
-    Program invoked by the `run-forth' command (including arguments).
+    Program invoked by the 'run-forth' command (including arguments).
   inferior-forth-mode-hook
     Hook for customising inferior-forth-mode.
   forth-compile-command
-    Default command to execute on `compile'.
+    Default command to execute on 'compile'.
 "
   (interactive)
   (kill-all-local-variables)
@@ -1290,10 +1290,10 @@ Variables controlling interaction with the Forth-process (also see
 ;;;###autoload
 (define-derived-mode forth-block-mode forth-mode "Forth Block Source"
   "Major mode for editing Forth block source files, derived from
-`forth-mode'. Differences to `forth-mode' are:
- * files are converted to block format, when written (`buffer-file-format'
-   is set to `(forth-blocks)')
- * `forth-show-screen' and `forth-warn-long-lines' are t by default
+'forth-mode'. Differences to 'forth-mode' are:
+ * files are converted to block format, when written ('buffer-file-format'
+   is set to '(forth-blocks)')
+ * 'forth-show-screen' and 'forth-warn-long-lines' are t by default
 
 Note that the length of lines in block files is limited to 64 characters.
 When writing longer lines to a block file, a warning is displayed in the
@@ -1361,7 +1361,7 @@ programmers who tend to fill code won't use emacs anyway:-)."
 ;; Forth commands
 
 (defun forth-remove-tracers ()
-  "Remove tracers of the form `~~ '. Queries the user for each occurrence."
+  "Remove tracers of the form '~~ '. Queries the user for each occurrence."
   (interactive)
   (query-replace-regexp "\\(~~ \\| ~~$\\)" "" nil))
 
@@ -1435,12 +1435,12 @@ programmers who tend to fill code won't use emacs anyway:-)."
 ;;; Could be improved by also folding on comments
 
 ;; (dk) This code needs a rewrite; just too ugly and doesn't use the
-;; newer and smarter scanning rules of `imenu'. Who needs it anyway??
+;; newer and smarter scanning rules of 'imenu'. Who needs it anyway??
 
 ;; (require 'outline)
 
 ;; (defun f-outline-level ()
-;;   (cond	((looking-at "\\`\\\\")
+;;   (cond	((looking-at "\\'\\\\")
 ;; 	 0)
 ;; 	((looking-at "\\\\ SEC")
 ;; 	 0)
@@ -1463,7 +1463,7 @@ programmers who tend to fill code won't use emacs anyway:-)."
 
 ;;    ; outline mode header start, i.e. find word definitions
 ;; ;;;   (setq  outline-regexp  "^\\(:\\)[ \t]+\\([^ \t]*\\)")
-;;    (setq  outline-regexp  "\\`\\\\\\|:\\|\\\\ SEC\\|\\\\G\\|[ \t]+\\\\\\|\\\\ DEFS\\|\\/\\*\\|\\\\ \\\\ .*")
+;;    (setq  outline-regexp  "\\'\\\\\\|:\\|\\\\ SEC\\|\\\\G\\|[ \t]+\\\\\\|\\\\ DEFS\\|\\/\\*\\|\\\\ \\\\ .*")
 ;;    (setq outline-level 'f-outline-level)
 
 ;;    (outline-minor-mode)
@@ -1493,7 +1493,7 @@ programmers who tend to fill code won't use emacs anyway:-)."
 
 ;;;
 ;;; Inferior Forth interpreter
-;;;	-- mostly copied from `cmuscheme.el' of Emacs 21.2
+;;;	-- mostly copied from 'cmuscheme.el' of Emacs 21.2
 ;;;
 
 (eval-and-compile (forth-require 'comint))
@@ -1501,7 +1501,7 @@ programmers who tend to fill code won't use emacs anyway:-)."
 (when (memq 'comint features)
 
   (defvar forth-program-name "gforth"
-    "*Program invoked by the `run-forth' command, including program arguments")
+    "*Program invoked by the 'run-forth' command, including program arguments")
 
   (defcustom inferior-forth-mode-hook nil
     "*Hook for customising inferior-forth-mode."
@@ -1549,7 +1549,7 @@ Forth source.
         forth-send-buffer-and-go switch to the Forth process buffer after
         sending their text.
 For information on running multiple processes in multiple buffers, see
-documentation for variable `forth-process-buffer'.
+documentation for variable 'forth-process-buffer'.
 
 Commands:
 Return after the end of the process' output sends the text from the
@@ -1575,10 +1575,10 @@ end of process to point. If you accidentally suspend your process, use
 ;;;###autoload
   (defun run-forth (cmd)
     "Run an inferior Forth process, input and output via buffer *forth*.
-If there is a process already running in `*forth*', switch to that buffer.
+If there is a process already running in '*forth*', switch to that buffer.
 With argument, allows you to edit the command line (default is value
-of `forth-program-name').  Runs the hooks `inferior-forth-mode-hook'
-\(after the `comint-mode-hook' is run).
+of 'forth-program-name').  Runs the hooks 'inferior-forth-mode-hook'
+\(after the 'comint-mode-hook' is run).
 \(Type \\[describe-mode] in the process buffer for a list of commands.)"
 
     (interactive (list (if current-prefix-arg
@@ -1646,7 +1646,7 @@ With argument, position cursor at end of buffer."
     (interactive "P")
     (if (get-buffer forth-process-buffer)
 	(pop-to-buffer forth-process-buffer)
-      (error "No current process buffer.  See variable `forth-process-buffer'"))
+      (error "No current process buffer.  See variable 'forth-process-buffer'"))
     (cond (eob-p
 	   (push-mark)
 	   (goto-char (point-max)))))
@@ -1661,15 +1661,15 @@ Then switch to the process buffer."
   (defcustom forth-source-modes '(forth-mode forth-block-mode)
     "*Used to determine if a buffer contains Forth source code.
 If it's loaded into a buffer that is in one of these major modes, it's
-considered a Forth source file by `forth-load-file' and `forth-compile-file'.
+considered a Forth source file by 'forth-load-file' and 'forth-compile-file'.
 Used by these commands to determine defaults."
     :type '(repeat function)
     :group 'forth)
 
   (defvar forth-prev-l/c-dir/file nil
     "Caches the last (directory . file) pair.
-Caches the last pair used in the last `forth-load-file' or
-`forth-compile-file' command. Used for determining the default in the
+Caches the last pair used in the last 'forth-load-file' or
+'forth-compile-file' command. Used for determining the default in the
 next one.")
 
   (defun forth-load-file (file-name)
@@ -1688,16 +1688,16 @@ next one.")
   
   (defvar forth-process-buffer nil "*The current Forth process buffer.
 
-See `scheme-buffer' for an explanation on how to run multiple Forth
+See 'scheme-buffer' for an explanation on how to run multiple Forth
 processes.")
 
   (defun forth-proc ()
-    "Return the current Forth process.  See variable `forth-process-buffer'."
+    "Return the current Forth process.  See variable 'forth-process-buffer'."
     (let ((proc (get-buffer-process (if (eq major-mode 'inferior-forth-mode)
 					(current-buffer)
 				      forth-process-buffer))))
       (or proc
-	  (error "No current process.  See variable `forth-process-buffer'"))))
+	  (error "No current process.  See variable 'forth-process-buffer'"))))
   )  ; (memq 'comint features)
 
 (provide 'forth-mode)
